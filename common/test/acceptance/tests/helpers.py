@@ -350,6 +350,48 @@ def is_404_page(browser):
     return 'Page not found (404)' in browser.find_element_by_tag_name('h1').text
 
 
+def get_url_with_changed_domain(url):
+    """
+    Replaces .org with .io in the url
+
+    Arguments:
+        url (str): The url to perform replace operation on.
+
+    Returns:
+        str: The updated url
+    """
+    return url.replace('.org/', '.io/')
+
+
+def assert_link(test, expected_link, actual_link):
+    """
+    Assert that 'href' and text inside help DOM element are correct.
+
+    Arguments:
+        test: Test on which links are being tested.
+        expected_link (dict): The expected link attributes.
+        actual_link (dict): The actual link attribute on page.
+    """
+    test.assertEqual(expected_link['href'], actual_link.get_attribute('href'))
+    test.assertEqual(expected_link['text'], actual_link.text)
+
+
+def assert_opened_help_link_is_correct(test, url):
+    """
+    Asserts that url of browser when help link is clicked is correct.
+    Arguments:
+        test (WebAppTest): test calling this method.
+        url (str): url to verify.
+    """
+    test.browser.switch_to_window(test.browser.window_handles[-1])
+    # Assert that url in the browser is the same.
+    # Please note that .org domain in href attribute of help anchor DOM element
+    # is changed into .io domain. This is because browser is redirected from .org
+    # domain to .io domain.
+    test.assertEqual(get_url_with_changed_domain(url), test.browser.current_url)
+    test.assertNotIn('Maze Found', test.browser.title)
+
+
 class EventsTestMixin(TestCase):
     """
     Helpers and setup for running tests that evaluate events emitted
@@ -741,6 +783,71 @@ def create_user_partition_json(partition_id, name, description, groups, scheme="
     return UserPartition(
         partition_id, name, description, groups, MockUserPartitionScheme(scheme)
     ).to_json()
+
+
+def get_expected_help_element_attributes(url, help_text='Help'):
+    """
+    Returns the expected help anchor element attributes
+
+    We use the output of it to match the actual anchor
+    elements on the page.
+
+    Arguments:
+        url (str): The url we want to see in the help anchor HTML element
+        help_text (str): The text inside the help anchor HTML element
+
+    Returns:
+        dict: Dictionary of attributes.
+    """
+    return {
+        'href': url,
+        'text': help_text
+    }
+
+
+def assert_nav_help_link(test, page, href, signed_in=True):
+    """
+    Asserts that help link in navigation bar is correct.
+
+    It first checks the url inside anchor DOM element and
+    then clicks to ensure that help opens correctly.
+
+    Arguments:
+    test (WebAppTest): Test object
+    page (PageObject): Page object to perform tests on.
+    href (str): The help link which we expect to see when it is opened.
+    signed_in (bool): Specifies whether user is logged in or not. (It effects the css)
+    """
+    expected_link = get_expected_help_element_attributes(href)
+    # Get actual anchor help element from the page.
+    actual_link = page.get_nav_help_element_and_click_help(signed_in)
+    # Assert that 'href' and text are the same as expected.
+    assert_link(test, expected_link, actual_link)
+    # Assert that opened link is correct
+    assert_opened_help_link_is_correct(test, href)
+
+
+def assert_side_bar_help_link(test, page, href, help_text, as_list_item=False):
+    """
+    Asserts that help link in side bar is correct.
+
+    It first checks the url inside anchor DOM element and
+    then clicks to ensure that help opens correctly.
+
+    Arguments:
+    test (WebAppTest): Test object
+    page (PageObject): Page object to perform tests on.
+    href (str): The help link which we expect to see when it is opened.
+    as_list_item (bool): Specifies whether help element is in one of the
+                         'li' inside a sidebar list DOM element.
+    """
+    expected_link = get_expected_help_element_attributes(href, help_text)
+    # Get actual anchor help element from the page.
+    actual_link = page.get_side_bar_help_element_and_click_help(as_list_item)
+    # Assert that 'href' and text are the same as expected.
+    assert_link(test, expected_link, actual_link)
+    # Assert that opened link is correct
+    assert_opened_help_link_is_correct(test, href)
 
 
 class TestWithSearchIndexMixin(object):
