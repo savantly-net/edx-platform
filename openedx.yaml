@@ -5,5 +5,5 @@ hidden-contributors: [aculich, anant*, kimtonyhyun, rcchirwa, terman]
 nick: edx
 oeps: {}
 openedx-release: {ref: release, requirements: requirements/edx/github.txt}
-owner: MUST FILL IN OWNER
+owner: edx/teaching-and-learning
 track-pulls: true
