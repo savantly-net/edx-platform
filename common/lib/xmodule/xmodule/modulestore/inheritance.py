@@ -294,6 +294,13 @@ class InheritingFieldData(KvsFieldData):
             # node of the tree, the block's default will be used.
             field = block.fields[name]
             ancestor = block.get_parent()
+            # Use library's default setting instead of inherited one(from parent) in case
+            # if block's parent is of type 'library_content'.
+            if ancestor and \
+               ancestor.location.category == 'library_content' and \
+               name in self._kvs._defaults.keys():
+                return super(InheritingFieldData, self).default(block, name)
+
             while ancestor is not None:
                 if field.is_set_on(ancestor):
                     return field.read_json(ancestor)

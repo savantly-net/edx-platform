@@ -2518,8 +2518,7 @@ class SplitMongoModuleStore(SplitBulkWriteMixin, ModuleStoreWriteBase):
             # </workaround>
 
             # Preserve any existing overrides
-            for name, value in existing_block_info.fields.iteritems():
-                new_block_info.fields[name] = value
+            new_block_info.fields = existing_block_info.fields
 
             if 'children' in new_block_info.defaults:
                 del new_block_info.defaults['children']  # Will be set later
