@@ -257,13 +257,19 @@
         DiscussionUtil.formErrorHandler = function(errorsField) {
             return function(xhr, textStatus, error) {
                 var makeErrorElem, response, _i, _len, _ref, _results, $errorItem;
-                makeErrorElem = function(message) {
-                    return edx.HtmlUtils.setHtml(
-                        $('<li>').addClass('post-error'),
-                        message
+                makeErrorElem = function(message, alertId) {
+                    return edx.HtmlUtils.joinHtml(
+                        edx.HtmlUtils.HTML('<li>'),
+                        edx.HtmlUtils.template(
+                            $('#new-post-alert-template').html()
+                        )({
+                            message: message,
+                            alertId: alertId
+                        }),
+                        edx.HtmlUtils.HTML('</li>')
                     );
                 };
-                errorsField.empty().show();
+                errorsField.empty().show().focus();
                 if (xhr.status === 400) {
                     response = JSON.parse(xhr.responseText);
                     if (response.errors) {
@@ -271,16 +277,14 @@
                         _results = [];
                         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                             error = _ref[_i];
-                            $errorItem = makeErrorElem(error);
-                            _results.push(errorsField.append($errorItem));
+                            $errorItem = makeErrorElem(error, _i);
+                            _results.push(edx.HtmlUtils.append(errorsField, $errorItem));
                         }
                         return _results;
                     }
                 } else {
-                    $errorItem = makeErrorElem(
-                        gettext('We had some trouble processing your request. Please try again.')
-                    );
-                    return errorsField.append($errorItem);
+                    $errorItem = makeErrorElem('We had some trouble processing your request. Please try again.', 0);
+                    return edx.HtmlUtils.append(errorsField, $errorItem);
                 }
             };
         };

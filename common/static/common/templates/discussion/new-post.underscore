@@ -1,5 +1,5 @@
 <form class="forum-new-post-form">
-    <ul class="post-errors" style="display: none"></ul>
+    <ul class="post-errors" style="display: none" tabindex="-1"></ul>
     <div class="forum-new-post-form-wrapper"></div>
     <% if (cohort_options) { %>
     <div class="post-field group-selector-wrapper <% if (!is_commentable_cohorted) { print('disabled'); } %>">
