@@ -968,11 +968,24 @@ def settings_handler(request, course_key_string):
     PUT
         json: update the Course and About xblocks through the CourseDetails model
     """
+
+    from datetime import datetime
+    log.debug('***********************************************************')
+    log.debug('***********************************************************')
+    log.debug('***********************************************************')
+    log.debug('***********************************************************')
+    log.debug('Request = ')
+    log.debug(request)
+
     course_key = CourseKey.from_string(course_key_string)
     credit_eligibility_enabled = settings.FEATURES.get('ENABLE_CREDIT_ELIGIBILITY', False)
     with modulestore().bulk_operations(course_key):
         course_module = get_course_and_check_access(course_key, request.user)
         if 'text/html' in request.META.get('HTTP_ACCEPT', '') and request.method == 'GET':
+
+            log.debug('HTML request')
+            log.debug(datetime.now().time())
+
             upload_asset_url = reverse_course_url('assets_handler', course_key)
 
             # see if the ORG of this course can be attributed to a defined configuration . In that case, the
@@ -1046,8 +1059,19 @@ def settings_handler(request, course_key_string):
 
             return render_to_response('settings.html', settings_context)
         elif 'application/json' in request.META.get('HTTP_ACCEPT', ''):
+
+            log.debug('JSON request Block')
+            log.debug(datetime.now().time())
+
             if request.method == 'GET':
+                log.debug('JSON request GET Block')
+                log.debug(datetime.now().time())
+
                 course_details = CourseDetails.fetch(course_key)
+
+                log.debug(datetime.now().time())
+                log.debug(course_details)
+
                 return JsonResponse(
                     course_details,
                     # encoder serializes dates, old locations, and instances
