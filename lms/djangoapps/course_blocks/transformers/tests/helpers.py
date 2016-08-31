@@ -115,11 +115,9 @@ class CourseStructureTestCase(TransformerRegistryTestMixin, ModuleStoreTestCase)
             # It would be re-added to the course if the course was
             # explicitly listed in parents.
             course = modulestore().get_item(block_map['course'].location)
-            try:
+            if block_key in course.children:
                 course.children.remove(block_key)
-            except ValueError:
-                pass  # block_key was not a direct child of course, carry on
-            block_map['course'] = update_block(course)
+                block_map['course'] = update_block(course)
 
             # Add this to block to each listed parent.
             for parent_ref in parents:

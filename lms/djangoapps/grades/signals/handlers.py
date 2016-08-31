@@ -1,20 +1,25 @@
 """
 Grades related signals.
 """
-from django.conf import settings
 from logging import getLogger
+
+from django.conf import settings
+from django.dispatch import receiver
+
 from opaque_keys.edx.locator import CourseLocator
 from opaque_keys.edx.keys import UsageKey
+from openedx.core.djangoapps.content.block_structure.api import get_course_in_cache
+from student.models import user_by_anonymous_id
+from submissions.models import score_set, score_reset
 
 from .signals import SCORE_CHANGED
-from .transformer import GradesTransformer
-from .new.subsection_grade import SubsectionGradeFactory
-from openedx.core.djangoapps.content.block_structure.api import get_block_structure_manager
-from student.models import user_by_anonymous_id
+from ..transformer import GradesTransformer
+from ..new.subsection_grade import SubsectionGradeFactory
 
 log = getLogger(__name__)
 
 
+@receiver(score_set)
 def submissions_score_set_handler(sender, **kwargs):  # pylint: disable=unused-argument
     """
     Consume the score_set signal defined in the Submissions API, and convert it
@@ -57,6 +62,7 @@ def submissions_score_set_handler(sender, **kwargs):  # pylint: disable=unused-a
         )
 
 
+@receiver(score_reset)
 def submissions_score_reset_handler(sender, **kwargs):  # pylint: disable=unused-argument
     """
     Consume the score_reset signal defined in the Submissions API, and convert
@@ -94,6 +100,7 @@ def submissions_score_reset_handler(sender, **kwargs):  # pylint: disable=unused
         )
 
 
+@receiver(SCORE_CHANGED)
 def recalculate_subsection_grade_handler(sender, **kwargs):  # pylint: disable=unused-argument
     """
     Consume the SCORE_CHANGED signal and trigger an update.
@@ -112,21 +119,19 @@ def recalculate_subsection_grade_handler(sender, **kwargs):  # pylint: disable=u
         course_id = kwargs['course_id']
         usage_id = kwargs['usage_id']
         student = kwargs['user']
-    except KeyError as ex:
+    except KeyError:
         log.exception(
             u"Failed to process SCORE_CHANGED signal, some arguments were missing."
             "user: %s, course_id: %s, usage_id: %s.",
             kwargs.get('user', None),
             kwargs.get('course_id', None),
             kwargs.get('usage_id', None),
-            ex.message
         )
         return
 
     course_key = CourseLocator.from_string(course_id)
     usage_key = UsageKey.from_string(usage_id).replace(course_key=course_key)
-    manager = get_block_structure_manager(course_key)
-    block_structure = manager.get_collected()
+    block_structure = get_course_in_cache(course_key)
 
     subsections_to_update = block_structure.get_transformer_block_field(
         usage_key,
@@ -136,4 +141,4 @@ def recalculate_subsection_grade_handler(sender, **kwargs):  # pylint: disable=u
     )
 
     for subsection in subsections_to_update:
-        SubsectionGradeFactory(student).update(usage_key, course_key)
+        SubsectionGradeFactory(student).update(subsection, course_key)

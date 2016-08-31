@@ -13,12 +13,12 @@ from xmodule.modulestore import ModuleStoreEnum
 from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
 from xmodule.modulestore.tests.factories import CourseFactory, ItemFactory, check_mongo_calls
 
-from ..receivers import (
+from ..signals.handlers import (
     submissions_score_set_handler,
     submissions_score_reset_handler,
     recalculate_subsection_grade_handler,
 )
-from ..signals import SCORE_CHANGED
+from ..signals.signals import SCORE_CHANGED
 
 
 SUBMISSION_SET_KWARGS = {
@@ -50,10 +50,13 @@ class SubmissionSignalRelayTest(TestCase):
         Configure mocks for all the dependencies of the render method
         """
         super(SubmissionSignalRelayTest, self).setUp()
-        self.signal_mock = self.setup_patch('lms.djangoapps.grades.signals.SCORE_CHANGED.send', None)
+        self.signal_mock = self.setup_patch('lms.djangoapps.grades.signals.signals.SCORE_CHANGED.send', None)
         self.user_mock = MagicMock()
         self.user_mock.id = 42
-        self.get_user_mock = self.setup_patch('lms.djangoapps.grades.receivers.user_by_anonymous_id', self.user_mock)
+        self.get_user_mock = self.setup_patch(
+            'lms.djangoapps.grades.signals.handlers.user_by_anonymous_id',
+            self.user_mock
+        )
 
     def setup_patch(self, function_name, return_value):
         """
@@ -109,7 +112,7 @@ class SubmissionSignalRelayTest(TestCase):
         that has an invalid user ID, the courseware model does not generate a
         signal.
         """
-        self.get_user_mock = self.setup_patch('lms.djangoapps.grades.receivers.user_by_anonymous_id', None)
+        self.get_user_mock = self.setup_patch('lms.djangoapps.grades.signals.handlers.user_by_anonymous_id', None)
         submissions_score_set_handler(None, **SUBMISSION_SET_KWARGS)
         self.signal_mock.assert_not_called()
 
@@ -158,7 +161,7 @@ class SubmissionSignalRelayTest(TestCase):
         that has an invalid user ID, the courseware model does not generate a
         signal.
         """
-        self.get_user_mock = self.setup_patch('lms.djangoapps.grades.receivers.user_by_anonymous_id', None)
+        self.get_user_mock = self.setup_patch('lms.djangoapps.grades.signals.handlers.user_by_anonymous_id', None)
         submissions_score_reset_handler(None, **SUBMISSION_RESET_KWARGS)
         self.signal_mock.assert_not_called()
 
@@ -251,7 +254,7 @@ class ScoreChangedUpdatesSubsectionGradeTest(ModuleStoreTestCase):
     def test_missing_kwargs(self, kwarg, expected_mongo_calls, expected_sql_calls):
         self.set_up_course()
         del self.score_changed_kwargs[kwarg]
-        with patch('lms.djangoapps.grades.receivers.log') as log_mock:
+        with patch('lms.djangoapps.grades.signals.handlers.log') as log_mock:
             with check_mongo_calls(expected_mongo_calls) and self.assertNumQueries(expected_sql_calls):
                 recalculate_subsection_grade_handler(None, **self.score_changed_kwargs)
             self.assertEqual(log_mock.exception.called, kwarg not in ['points_possible', 'points_earned'])

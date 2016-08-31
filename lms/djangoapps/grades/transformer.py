@@ -54,7 +54,7 @@ class GradesTransformer(BlockStructureTransformer):
             block_structure=block_structure,
             transformer=cls,
             merged_field_name='containing_subsections',
-            base_case_predicate=lambda block_key: block_key.block_type == 'sequential',
+            filter_by=lambda block_key: block_key.block_type == 'sequential',
         )
 
     def transform(self, block_structure, usage_context):
