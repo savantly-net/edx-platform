@@ -55,7 +55,7 @@ class TextInputHintsTest(HintTest):
             {'module_id': 'i4x://Foo/bar/mock/abc',
              'problem_part_id': '1_2',
              'trigger_type': 'single',
-             'hint_label': u'Correct',
+             'hint_label': u'Correct:',
              'correctness': True,
              'student_answer': [u'Blue'],
              'question_type': 'stringresponse',
@@ -101,9 +101,9 @@ class TextInputExtendedHintsCaseInsensitive(HintTest):
     @data(
         {'problem_id': u'1_5_1', 'choice': 'abc', 'expected_string': ''},  # wrong answer yielding no hint
         {'problem_id': u'1_5_1', 'choice': 'A', 'expected_string':
-         u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Woo Hoo: </span><div class="hint-text">hint1</div></div>'},
+         u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Woo Hoo </span><div class="hint-text">hint1</div></div>'},
         {'problem_id': u'1_5_1', 'choice': 'a', 'expected_string':
-         u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Woo Hoo: </span><div class="hint-text">hint1</div></div>'},
+         u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Woo Hoo </span><div class="hint-text">hint1</div></div>'},
         {'problem_id': u'1_5_1', 'choice': 'B', 'expected_string':
          u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><div class="hint-text">hint2</div></div>'},
         {'problem_id': u'1_5_1', 'choice': 'b', 'expected_string':
@@ -235,12 +235,12 @@ class NumericInputHintsTest(HintTest):
 
     @data(
         {'problem_id': u'1_2_1', 'choice': '1.141',
-         'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Nice: </span><div class="hint-text">The square root of two turns up in the strangest places.</div></div>'},
+         'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Nice </span><div class="hint-text">The square root of two turns up in the strangest places.</div></div>'},
         {'problem_id': u'1_3_1', 'choice': '4',
          'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Correct: </span><div class="hint-text">Pretty easy, uh?.</div></div>'},
         # should get hint, when correct via numeric-tolerance
         {'problem_id': u'1_2_1', 'choice': '1.15',
-         'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Nice: </span><div class="hint-text">The square root of two turns up in the strangest places.</div></div>'},
+         'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Nice </span><div class="hint-text">The square root of two turns up in the strangest places.</div></div>'},
         # when they answer wrong, nothing
         {'problem_id': u'1_2_1', 'choice': '2', 'expected_string': ''},
     )
@@ -270,7 +270,7 @@ class CheckboxHintsTest(HintTest):
         {'problem_id': u'1_2_1', 'choice': [u'choice_4'],
          'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Incorrect: </span><div class="feedback-hint-multi"><div class="hint-text">Remember that apple is also a fruit.</div><div class="hint-text">You are right that mushrooms are not fruit</div><div class="hint-text">Remember that grape is also a fruit.</div><div class="hint-text">I do not know what a Camero is but it is not a fruit.</div></div></div>'},
         {'problem_id': u'1_2_1', 'choice': [u'choice_0', u'choice_1'],  # compound
-         'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Almost right: </span><div class="hint-text">You are right that apple is a fruit, but there is one you are missing. Also, mushroom is not a fruit.</div></div>'},
+         'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Almost right </span><div class="hint-text">You are right that apple is a fruit, but there is one you are missing. Also, mushroom is not a fruit.</div></div>'},
         {'problem_id': u'1_2_1', 'choice': [u'choice_1', u'choice_2'],  # compound
          'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Incorrect: </span><div class="hint-text">You are right that grape is a fruit, but there is one you are missing. Also, mushroom is not a fruit.</div></div>'},
         {'problem_id': u'1_2_1', 'choice': [u'choice_0', u'choice_2'],
@@ -284,7 +284,7 @@ class CheckboxHintsTest(HintTest):
         {'problem_id': u'1_3_1', 'choice': [u'choice_3'],
          'expected_string': u'<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Correct: </span><div class="feedback-hint-multi"><div class="hint-text">poor banana.</div><div class="hint-text">You are right that mushrooms are not vegatbles</div><div class="hint-text">Brussel sprouts are vegetables.</div></div></div>'},
         {'problem_id': u'1_3_1', 'choice': [u'choice_0', u'choice_1'],  # compound
-         'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Very funny: </span><div class="hint-text">Making a banana split?</div></div>'},
+         'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Very funny </span><div class="hint-text">Making a banana split?</div></div>'},
         {'problem_id': u'1_3_1', 'choice': [u'choice_1', u'choice_2'],
          'expected_string': u'<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Incorrect: </span><div class="feedback-hint-multi"><div class="hint-text">poor banana.</div><div class="hint-text">Mushroom is a fungus, not a vegetable.</div><div class="hint-text">Brussel sprout is the only vegetable in this list.</div></div></div>'},
         {'problem_id': u'1_3_1', 'choice': [u'choice_0', u'choice_2'],
@@ -299,13 +299,13 @@ class CheckboxHintsTest(HintTest):
         # check for labeling where multiple child hints have labels
         # These are some tricky cases
         {'problem_id': '1_5_1', 'choice': ['choice_0', 'choice_1'],
-         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">AA: </span><div class="feedback-hint-multi"><div class="hint-text">aa</div></div></div>'},
+         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">AA </span><div class="feedback-hint-multi"><div class="hint-text">aa</div></div></div>'},
         {'problem_id': '1_5_1', 'choice': ['choice_0'],
          'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Incorrect: </span><div class="feedback-hint-multi"><div class="hint-text">aa</div><div class="hint-text">bb</div></div></div>'},
         {'problem_id': '1_5_1', 'choice': ['choice_1'],
          'expected_string': ''},
         {'problem_id': '1_5_1', 'choice': [],
-         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">BB: </span><div class="feedback-hint-multi"><div class="hint-text">bb</div></div></div>'},
+         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">BB </span><div class="feedback-hint-multi"><div class="hint-text">bb</div></div></div>'},
 
         {'problem_id': '1_6_1', 'choice': ['choice_0'],
          'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><div class="feedback-hint-multi"><div class="hint-text">aa</div></div></div>'},
@@ -360,7 +360,7 @@ class CheckboxHintsTestTracking(HintTest):
         self.get_hint(u'1_2_1', [u'choice_0'])
         self.problem.capa_module.runtime.track_function.assert_called_with(
             'edx.problem.hint.feedback_displayed',
-            {'hint_label': u'Incorrect',
+            {'hint_label': u'Incorrect:',
              'module_id': 'i4x://Foo/bar/mock/abc',
              'problem_part_id': '1_1',
              'choice_all': ['choice_0', 'choice_1', 'choice_2'],
@@ -376,7 +376,7 @@ class CheckboxHintsTestTracking(HintTest):
         self.get_hint(u'1_2_1', [u'choice_1', u'choice_2'])
         self.problem.capa_module.runtime.track_function.assert_called_with(
             'edx.problem.hint.feedback_displayed',
-            {'hint_label': u'Incorrect',
+            {'hint_label': u'Incorrect:',
              'module_id': 'i4x://Foo/bar/mock/abc',
              'problem_part_id': '1_1',
              'choice_all': ['choice_0', 'choice_1', 'choice_2'],
@@ -395,7 +395,7 @@ class CheckboxHintsTestTracking(HintTest):
         self.get_hint(u'1_2_1', [u'choice_0', u'choice_2'])
         self.problem.capa_module.runtime.track_function.assert_called_with(
             'edx.problem.hint.feedback_displayed',
-            {'hint_label': u'Correct',
+            {'hint_label': u'Correct:',
              'module_id': 'i4x://Foo/bar/mock/abc',
              'problem_part_id': '1_1',
              'choice_all': ['choice_0', 'choice_1', 'choice_2'],
@@ -437,9 +437,9 @@ class MultpleChoiceHintsTest(HintTest):
         {'problem_id': u'1_3_1', 'choice': u'choice_1',
          'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Correct: </span><div class="hint-text">Potato is a root vegetable.</div></div>'},
         {'problem_id': u'1_2_1', 'choice': u'choice_2',
-         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">OUTSTANDING: </span><div class="hint-text">Apple is indeed a fruit.</div></div>'},
+         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">OUTSTANDING </span><div class="hint-text">Apple is indeed a fruit.</div></div>'},
         {'problem_id': u'1_3_1', 'choice': u'choice_2',
-         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">OOPS: </span><div class="hint-text">Apple is a fruit.</div></div>'},
+         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">OOPS </span><div class="hint-text">Apple is a fruit.</div></div>'},
         {'problem_id': u'1_3_1', 'choice': u'choice_9',
          'expected_string': ''},
     )
@@ -466,7 +466,7 @@ class MultpleChoiceHintsWithHtmlTest(HintTest):
             'edx.problem.hint.feedback_displayed',
             {'module_id': 'i4x://Foo/bar/mock/abc', 'problem_part_id': '1_1', 'trigger_type': 'single',
              'student_answer': [u'choice_0'], 'correctness': False, 'question_type': 'multiplechoiceresponse',
-             'hint_label': 'Incorrect', 'hints': [{'text': 'Mushroom <img src="#" ale="#"/>is a fungus, not a fruit.'}]}
+             'hint_label': 'Incorrect:', 'hints': [{'text': 'Mushroom <img src="#" ale="#"/>is a fungus, not a fruit.'}]}
         )
 
     @data(
@@ -499,12 +499,12 @@ class DropdownHintsTest(HintTest):
             'edx.problem.hint.feedback_displayed',
             {'module_id': 'i4x://Foo/bar/mock/abc', 'problem_part_id': '1_2', 'trigger_type': 'single',
              'student_answer': [u'FACES'], 'correctness': True, 'question_type': 'optionresponse',
-             'hint_label': 'Correct', 'hints': [{'text': 'With lots of makeup, doncha know?'}]}
+             'hint_label': 'Correct:', 'hints': [{'text': 'With lots of makeup, doncha know?'}]}
         )
 
     @data(
         {'problem_id': u'1_2_1', 'choice': 'Multiple Choice',
-         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Good Job: </span><div class="hint-text">Yes, multiple choice is the right answer.</div></div>'},
+         'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Good Job </span><div class="hint-text">Yes, multiple choice is the right answer.</div></div>'},
         {'problem_id': u'1_2_1', 'choice': 'Text Input',
          'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">Incorrect: </span><div class="hint-text">No, text input problems do not present options.</div></div>'},
         {'problem_id': u'1_2_1', 'choice': 'Numerical Input',
@@ -512,7 +512,7 @@ class DropdownHintsTest(HintTest):
         {'problem_id': u'1_3_1', 'choice': 'FACES',
          'expected_string': '<div class="feedback-hint-correct"><div class="explanation-title">Answer</div><span class="hint-label">Correct: </span><div class="hint-text">With lots of makeup, doncha know?</div></div>'},
         {'problem_id': u'1_3_1', 'choice': 'dogs',
-         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">NOPE: </span><div class="hint-text">Not dogs, not cats, not toads</div></div>'},
+         'expected_string': '<div class="feedback-hint-incorrect"><div class="explanation-title">Answer</div><span class="hint-label">NOPE </span><div class="hint-text">Not dogs, not cats, not toads</div></div>'},
         {'problem_id': u'1_3_1', 'choice': 'wrongo',
          'expected_string': ''},
 
