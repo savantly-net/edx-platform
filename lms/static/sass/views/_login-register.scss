@@ -226,6 +226,11 @@
             font-family: $sans-serif;
             font-style: normal;
             font-weight: 500;
+            
+            &[type="checkbox"],
+            &[type="radio"] {
+                height: auto;
+            }
         }
 
         #login-remember {
@@ -234,8 +239,8 @@
         }
 
         label {
-            display: block;
-            margin: 0 0 6px 0;
+            display: inline-block;
+            margin: 3px 0 6px 0;
 
             &.inline {
                 display: inline;
@@ -245,19 +250,21 @@
                 color: $red;
             }
 
-            &[for="register-honor_code"], &[for="register-terms_of_service"] {
-                display: inline-block;
-                margin: 5px 5px 0 0;
-                width: 90%;
-                vertical-align: top;
-            }
-
             &[for="login-remember"] {
                 display: inline-block;
+                width: auto;
             }
-
-            a {
-                font-family: $sans-serif;
+        }
+        
+        .field-inline-label {
+            display: inline-block;
+            vertical-align: top;
+            width: 90%;
+            margin-top: -4px; // inline with checkbox/radio
+            
+            label {
+                display: inline;
+                margin: 0;
             }
         }
 

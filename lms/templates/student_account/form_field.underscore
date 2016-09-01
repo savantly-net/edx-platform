@@ -45,7 +45,7 @@
             <% if ( type !== 'password' ) { %> aria-describedby="<%= form %>-<%= name %>-desc" <% } %>
             <% if ( restrictions.min_length ) { %> minlength="<%= restrictions.min_length %>"<% } %>
             <% if ( restrictions.max_length ) { %> maxlength="<%= restrictions.max_length %>"<% } %>
-            <% if ( required ) { %> aria-required="true" required<% } %>
+            <% if ( required ) { %> required<% } %>
             <% if ( typeof errorMessages !== 'undefined' ) {
                 _.each(errorMessages, function( msg, type ) {%>
                     data-errormsg-<%= type %>="<%= msg %>"
@@ -55,10 +55,13 @@
             value="<%- defaultValue %>"
         />
         <% if ( type === 'checkbox' ) { %>
-            <label for="<%= form %>-<%= name %>">
-                <%= label %>
+            <div class="field-inline-label">
+                <label for="<%= form %>-<%= name %>">
+                    <%= label %>
+                </label>
+                <% if ( label_link ) { %> <%= label_link %><% } %>
                 <% if ( required && requiredStr ) { %> <%= requiredStr %><% } %>
-            </label>
+            </div>
         <% } %>
         <% if ( instructions ) { %> <span class="tip tip-input" id="<%= form %>-<%= name %>-desc"><%= instructions %></span><% } %>
     <% } %>
