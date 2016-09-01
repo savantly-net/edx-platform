@@ -25,6 +25,7 @@ define([
                         placeholder: '',
                         required: true,
                         requiredStr: '',
+                        label_link: '',
                         type: 'select'
                     }, {
                         defaultValue: '',
@@ -40,6 +41,7 @@ define([
                         ],
                         placeholder: '',
                         required: true,
+                        label_link: '',
                         type: 'select'
                     }, {
                         defaultValue: '',
@@ -48,6 +50,7 @@ define([
                         name: 'reason_for_applying',
                         placeholder: '',
                         required: true,
+                        label_link: '',
                         restrictions: {
                             min_length: 800,
                             max_length: 2500
@@ -60,6 +63,7 @@ define([
                         name: 'goals',
                         placeholder: '',
                         required: true,
+                        label_link: '',
                         restrictions: {
                             min_length: 800,
                             max_length: 2500
@@ -72,6 +76,7 @@ define([
                         name: 'effort',
                         placeholder: '',
                         required: true,
+                        label_link: '',
                         restrictions: {
                             min_length: 800,
                             max_length: 2500
@@ -84,6 +89,7 @@ define([
                         name: 'mktg-permission',
                         placeholder: '',
                         required: false,
+                        label_link: '',
                         restrictions: {},
                         type: 'checkbox'
                     }
