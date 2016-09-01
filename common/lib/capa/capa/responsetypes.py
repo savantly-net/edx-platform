@@ -344,13 +344,9 @@ class LoncapaResponse(object):
         # Tricky: label None means output defaults, while '' means output empty label
         if label is None:
             if correct:
-                correctness = _("Correct")
+                label = _(u'Correct:')
             else:
-                correctness = _("Incorrect")
-
-            label = HTML(u'{correctness}').format(
-                correctness=Text(correctness)
-            )
+                label = _(u'Incorrect:')
 
         # self.runtime.track_function('get_demand_hint', event_info)
         # This this "feedback hint" event
@@ -381,9 +377,9 @@ class LoncapaResponse(object):
             )
         label_wrap = ''
         if label:
-            label_wrap = HTML('<span class="{question_hint_label_style}">{label}: </span>').format(
+            label_wrap = HTML('<span class="{question_hint_label_style}">{label} </span>').format(
                 question_hint_label_style=QUESTION_HINT_LABEL_STYLE,
-                label=label
+                label=Text(label)
             )
 
         # Establish the outer style
@@ -395,7 +391,7 @@ class LoncapaResponse(object):
         # Ready to go
         return HTML('<div class="{st}"><div class="explanation-title">{text}</div>{lwrp}{hintswrap}</div>').format(
             st=style,
-            text=Text(_("Answer:")),
+            text=Text(_("Answer")),
             lwrp=label_wrap,
             hintswrap=hints_wrap
         )

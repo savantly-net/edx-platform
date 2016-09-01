@@ -135,7 +135,7 @@ class ProblemExtendedHintTest(ProblemsTest, EventsTestMixin):
         self.assertEqual(problem_page.problem_text[0], u'question text')
         problem_page.fill_answer('B')
         problem_page.click_check()
-        self.assertEqual(problem_page.message_text, u'Answer:\nIncorrect: hint')
+        self.assertEqual(problem_page.message_text, u'Answer\nIncorrect: hint')
         # Check for corresponding tracking event
         actual_events = self.wait_for_events(
             event_filter={'event_type': 'edx.problem.hint.feedback_displayed'},
@@ -210,7 +210,7 @@ class ProblemHintWithHtmlTest(ProblemsTest, EventsTestMixin):
         self.assertEqual(problem_page.problem_text[0], u'question text')
         problem_page.fill_answer('C')
         problem_page.click_check()
-        self.assertEqual(problem_page.message_text, u'Answer:\nIncorrect: aa bb cc')
+        self.assertEqual(problem_page.message_text, u'Answer\nIncorrect: aa bb cc')
         # Check for corresponding tracking event
         actual_events = self.wait_for_events(
             event_filter={'event_type': 'edx.problem.hint.feedback_displayed'},
