@@ -3,7 +3,7 @@
 <% doinline = 'style="display:inline-block;vertical-align:top"' if inline else "" %>
 <div id="formulaequationinput_${id}" class="inputtype formulaequationinput" ${doinline | n}>
     <div class="${status.classname}" id="status_${id}">
-        <label class="problem-group-label" for="input_${id}">${response_data['label']}</label>
+        <label class="problem-group-label" for="input_${id}" id="label_${id}">${response_data['label']}</label>
         % for description_id, description_text in response_data['descriptions'].items():
             <p class="question-description" id="${description_id}">${description_text}</p>
         % endfor
@@ -33,6 +33,6 @@
     <div class="script_placeholder" data-src="${previewer}"/>
 
   % if msg:
-      <span class="message" aria-describedby="input_${id}" aria-live="polite" tabindex="-1">${HTML(msg)}</span>
+      <span class="message" aria-describedby="label_${id}" aria-live="polite" tabindex="-1">${HTML(msg)}</span>
   % endif
 </div>

@@ -17,7 +17,7 @@
     <div class="block">${comment_prompt}</div>
     <textarea class="comment" id="input_${id}_comment" name="input_${id}_comment" aria-describedby="answer_${id}">${comment_value|h}</textarea>
 
-    <div class="block">${tag_prompt}</div>
+    <div class="block" id="label_${id}">${tag_prompt}</div>
     <ul class="tags">
     % for option in options:
         <li>
@@ -60,5 +60,5 @@
 </form>
 
 % if msg:
-<span class="message" aria-describedby="input_${id}_comment" aria-live="polite" tabindex="-1">${HTML(msg)}</span>
+<span class="message" aria-describedby="label_${id}" aria-live="polite" tabindex="-1">${HTML(msg)}</span>
 % endif
