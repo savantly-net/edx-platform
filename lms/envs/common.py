@@ -362,6 +362,8 @@ FEATURES = {
     # feature flag and the advanced setting must both be true for
     # a course to use saved grades.
     'ENABLE_SUBSECTION_GRADES_SAVED': False,
+
+    'RETRY_MAX_ATTEMPTS': 5,
 }
 
 # Ignore static asset files on import which match this pattern
@@ -375,6 +377,9 @@ GENERATE_PROFILE_SCORES = False
 
 # Used with XQueue
 XQUEUE_WAITTIME_BETWEEN_REQUESTS = 5  # seconds
+
+# Used with Email sending
+RETRY_TIMEOUT = 0.5
 
 
 ############################# SET PATH INFORMATION #############################
