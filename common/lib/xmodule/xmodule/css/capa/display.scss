@@ -273,6 +273,8 @@ div.problem {
       @include padding($baseline/2);
       @include padding-left($baseline*1.75);
       position: relative;
+      font-size: $base-font-size;
+      line-height: $base-line-height;
     }
 
     input[type="radio"],
